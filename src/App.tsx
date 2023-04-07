@@ -1,25 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import { Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
+import { routes } from "./route";
+import { ThemeProvider } from "styled-components"
+import GlobalStyle from "./assets/style/Global.style";
+import theme from "./assets/style/themes";
+import Navbar from "./components/Home/Navbar";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle/>
+        <Navbar/>
+          <Suspense fallback={<h1>Loading...</h1>}>
+            <Routes>
+              {routes.map((item) => {
+                return (
+                  <Route
+                    key={item.id}
+                    index
+                    path={item.path}
+                    element={item.component}
+                  />
+                )
+              })}
+            </Routes>
+          </Suspense>
+      </ThemeProvider>
   );
 }
 
